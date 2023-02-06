@@ -1,0 +1,37 @@
+{
+  "name": "footballtracker-api",
+  "version": "1.0.0",
+  "description": "A football tracker api",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --forceExit",
+    "start": "nodemon src/app.js",
+    "pretest": "node database/seeder.js",
+    "db:clean": "node database/dbCleaner.js",
+    "db:seed": "node database/seeder.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergiobaeza/footballtracker-api.git"
+  },
+  "author": "Alvaro Pastor, Sergio Baeza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sergiobaeza/footballtracker-api/issues"
+  },
+  "homepage": "https://github.com/sergiobaeza/footballtracker-api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jest": "^29.2.1",
+    "jwt-simple": "^0.5.6",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.25.3",
+    "sqlite3": "^5.1.2",
+    "supertest": "^6.3.0"
+  }
+}

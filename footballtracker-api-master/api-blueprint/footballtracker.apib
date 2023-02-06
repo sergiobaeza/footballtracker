@@ -1,0 +1,920 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# footballtracker-api
+
+Desarrolladores del API REST: Alvaro Pastor, Sergio Baeza
+
+Un api que sirve para que los usuarios puedan guardar sus competiciones, 
+partidos favoritos y observar los resultados de partidos de una forma clara.
+
+## Auth Register [/users/register]
+
+### Registrarse [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Alvaro",
+                "email": "alvaro@alu.ua.es",
+                "password": 123,
+                "birthDate": "2000/07/08",
+                "administrador": false
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+        
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "Existing entered email"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: users/1
+            
+    + Body
+
+            {
+                "id": 1,
+                "name": "Alvaro",
+                "email": "alvaro@alu.ua.es",
+                "password": 123,
+                "birthDate": 2000-07-08,
+                "administrador": false
+            }
+
+
+## Auth Login [/users/login]
+
+### Iniciar sesion [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "email": "alvaro@alu.ua.es",
+                "password": 123,
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+        
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "Existing entered email"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "token": "asdineofnaoflncapdjpwa@3~#@aosdn"
+            }
+            
+            
+## User info [/users/{userId}]
+
+Necesitas estar autentificado.
+
++ Parameters
+
+    + userId: 1 (number) - El id del usuario.
+
+### Visualizar datos de usuario [GET]
+
+    
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+        
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Alvaro",
+                "email": "alvaro@alu.ua.es",
+                "password": 123,
+                "birthDate": 2000-07-08,
+                "administrador": false
+            }
+            
+### Editar datos de usuario [PATCH]
+    
++ Request
+
+    + Body
+
+            {
+                "name": "Alvaro1",
+                "password": 121233,
+            }
+    
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+        
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+            
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
+
+## Followed Competitions [/users/{userId}/competitions]
+
+Necesitas estar autentificado.
+
++ Parameters
+
+    + userId: 1 (number) - El id del usuario.
+
+### Seguir una competicion [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "competitionId": 1
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+            
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 204 (application/json)
+
+    + Headers
+    
+            Location: users/1/competition
+            
+### Dejar de seguir una competicion [DELETE]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "competitionId": 1
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+            
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 204 (application/json)
+
+    + Headers
+    
+            Location: users/1/competition
+            
+### Ver competiciones que sigue un usuario [GET]
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+            
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            [      
+                {
+                    "name": "Champions",
+                    "country": "España",
+                    "startDate": "2022/9/7",
+                    "endDate": "2023/2/3",
+                },
+                {
+                    "name": "Champions2",
+                    "country": "España2",
+                    "startDate": "2022/9/7",
+                    "endDate": "2023/2/3",
+                }
+            
+            ]
+
+
+## Followed Matches [/users/{userId}/matches]
+
+Necesitas estar autentificado.
+
++ Parameters
+
+    + userId: 1 (number) - El id del usuario.
+
+### Seguir un partido [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "matchId": 1
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+            
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 204 (application/json)
+
+    + Headers
+    
+            Location: users/1/matches
+
+### Dejar de seguir un partido [DELETE]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "matchId": 1
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+            
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 204 (application/json)
+
+    + Headers
+    
+            Location: users/1/matches
+
+### Ver partidos que sigue un usuario [GET]
+
+Este endpoint te devolvera a parte de todos los partidos, 
+los equipos que jugaran en cada partido y en que competicion se jugara.
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+            
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "match":
+                    {
+                        "date": "2022/12/7",
+                        "stadiumName": "Camp nou",
+                        "played": false,
+                        "localScore": undefined,
+                        "awayScore": undefined,
+                    },
+                    "localTeam": 
+                    {
+                        "name": "Barça",
+                        "stadiumName": "Camp nou",
+                        "foundationYear": "1934/2/24",
+                        "country": "España",
+                        "city": "Barcelona",
+                    },
+                    "awayTeam": 
+                    {
+                        "name": "Real Madrid",
+                        "stadiumName": "Santiago Bernabeu",
+                        "foundationYear": "1923/2/13",
+                        "country": "España",
+                        "city": "Madrid",
+                    },
+                    "competition": 
+                    {
+                        "name": "Champions",
+                        "country": "España",
+                        "startDate": "2022/9/7",
+                        "endDate": "2023/2/3",
+                    }
+                },
+                {
+                    "match":
+                    {
+                        "date": "2022/8/7",
+                        "stadiumName": "Santiago Bernabeu",
+                        "played": false,
+                        "localScore": 1,
+                        "awayScore": 0,
+                    },
+                    "localTeam": 
+                    {
+                        "name": "Barça",
+                        "stadiumName": "Camp nou",
+                        "foundationYear": "1934/2/24",
+                        "country": "España",
+                        "city": "Barcelona",
+                    },
+                    "awayTeam": 
+                    {
+                        "name": "Real Madrid",
+                        "stadiumName": "Santiago Bernabeu",
+                        "foundationYear": "1923/2/13",
+                        "country": "España",
+                        "city": "Madrid",
+                    },
+                    "competition": 
+                    {
+                        "name": "Champions",
+                        "country": "España",
+                        "startDate": "2022/9/7",
+                        "endDate": "2023/2/3",
+                    }
+                }
+            ]
+
+## Match [/matches]
+
+### Ver partidos [GET]
+Este endpoint esta controlado por paginacion y te devolvera a parte de todos los partidos, 
+los equipos que jugaran en cada partido y en que competicion se jugara.
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+            
+    + Body
+
+
+            {
+                "offset": 0,
+                "limit": 1,
+                "total": 1,
+                "count": 1,
+                "url": {
+                    "before": "localhost:3000/matches?offset=0&limit=1",
+                    "next": "localhost:3000/matches?offset=2&limit=2",
+                },
+                "results": [
+                    "match": 
+                    {
+                        "date": "2022/12/7",
+                        "stadiumName": "Camp nou",
+                        "played": false,
+                        "localScore": undefined,
+                        "awayScore": undefined,
+                    },
+                    "localTeam": 
+                    {
+                        "name": "Barça",
+                        "stadiumName": "Camp nou",
+                        "foundationYear": "1934/2/24",
+                        "country": "España",
+                        "city": "Barcelona",
+                    },
+                    "awayTeam": 
+                    {
+                        "name": "Real Madrid",
+                        "stadiumName": "Santiago Bernabeu",
+                        "foundationYear": "1923/2/13",
+                        "country": "España",
+                        "city": "Madrid",
+                    },
+                    "competition": 
+                    {
+                        "name": "Champions",
+                        "country": "España",
+                        "startDate": "2022/9/7",
+                        "endDate": "2023/2/3",
+                    }
+                ]
+            }
+
+
+
+## Matches in Competition [/competitions/{id}/matches]
+
++ Parameters
+
+    + id: 1 (number) - El id de la competicion
+    
+### Ver partidos de una competicion [GET]
+
+Este endpoint te devolvera a parte de todos los partidos, 
+los equipos que jugaran en cada partido y en que competicion se jugara.
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+             [
+                {
+                    "match":
+                    {
+                        "date": "2022/12/7",
+                        "stadiumName": "Camp nou",
+                        "played": false,
+                        "localScore": undefined,
+                        "awayScore": undefined,
+                    },
+                    "localTeam": 
+                    {
+                        "name": "Barça",
+                        "stadiumName": "Camp nou",
+                        "foundationYear": "1934/2/24",
+                        "country": "España",
+                        "city": "Barcelona",
+                    },
+                    "awayTeam": 
+                    {
+                        "name": "Real Madrid",
+                        "stadiumName": "Santiago Bernabeu",
+                        "foundationYear": "1923/2/13",
+                        "country": "España",
+                        "city": "Madrid",
+                    },
+                    "competition": 
+                    {
+                        "name": "Champions",
+                        "country": "España",
+                        "startDate": "2022/9/7",
+                        "endDate": "2023/2/3",
+                    }
+                },
+                {
+                    "match":
+                    {
+                        "date": "2022/8/7",
+                        "stadiumName": "Santiago Bernabeu",
+                        "played": false,
+                        "localScore": 1,
+                        "awayScore": 0,
+                    },
+                    "localTeam": 
+                    {
+                        "name": "Barça",
+                        "stadiumName": "Camp nou",
+                        "foundationYear": "1934/2/24",
+                        "country": "España",
+                        "city": "Barcelona",
+                    },
+                    "awayTeam": 
+                    {
+                        "name": "Real Madrid",
+                        "stadiumName": "Santiago Bernabeu",
+                        "foundationYear": "1923/2/13",
+                        "country": "España",
+                        "city": "Madrid",
+                    },
+                    "competition": 
+                    {
+                        "name": "Champions",
+                        "country": "España",
+                        "startDate": "2022/9/7",
+                        "endDate": "2023/2/3",
+                    }
+                }
+            ]
+
+## Competition [/competitions]
+
+### Ver competiciones [GET]
+        
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            [      
+                {
+                    "name": "Champions",
+                    "country": "España",
+                    "startDate": "2022/9/7",
+                    "endDate": "2023/2/3",
+                },
+                {
+                    "name": "Champions2",
+                    "country": "España2",
+                    "startDate": "2022/9/7",
+                    "endDate": "2023/2/3",
+                }
+            
+            ]
+
+
+## Players in Team [/teams/{id}/players]
+
++ Parameters
+
+    + id: 1 (number) - El id del equipo
+
+### Ver jugadores de un equipo [GET]
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "name": "Robert Lewandowski",
+                    "gamePosition": "Delantero",
+                    "birthDate": "1993/2/19",
+                    "country": "Polonia"
+                },
+                {
+                    "name": "Gerard Pique",
+                    "gamePosition": "Defensa",
+                    "birthDate": "1991/9/12",
+                    "country": "España"
+                }
+            ]
+
+## Team [/teams/{id}]
+
++ Parameters
+
+    + id: 1 (number) - El id del equipo
+
+### Ver informacion de un equipo [GET]
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Resource not found"
+            }
+
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "name": "Barça",
+                "stadiumName": "Camp nou",
+                "foundationYear": "1934/2/24",
+                "country": "España",
+                "city": "Barcelona",
+            }
+
+
+## Advertisements [/advertisements]
+
+Los anuncios tienen la opcion de subir una imagen cuando los creas, y esta, con el resto de datos de un anuncio, poder verlos a posteriori.
+
+### Crear anuncio publicitario [POST]
+
+Necesitas estar autentificado como administrador.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "name": "Leo Messi nuevo fichaje",
+                "description": "Leo Messi ficha de nuevo por el barça",
+                "brand": "Marca",
+                "img_src": "url_image"
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "message": "You dont have permissions"
+            }
+    
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Missing body params"
+            }
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 204 (application/json)
+
+
+### Ver anuncios publicitarios [GET]
+            
++ Response 500 (application/json)
+
+    + Body
+
+            {
+                "message": "Internal server error"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "name": "Leo Messi nuevo fichaje",
+                "description": "Leo Messi ficha de nuevo por el barça",
+                "brand": "Marca",
+                "img_src": "url_image"
+            },
+            {
+                "name": "Cristiano Ronaldo nuevo fichaje",
+                "description": "Cristiano Ronaldo ficha de nuevo por el Real Madrid",
+                "brand": "Marca",
+                "img_src": "url_image2"
+            }
+
+
+
+
+
+
